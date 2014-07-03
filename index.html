@@ -74,10 +74,10 @@
                 myGraph,
             function(s) {
               myGraph.refresh(),
-              // We first need to save the original colors of our
-              // nodes and edges, like this:
+              // Save colors and labels of nodes/edges
               s.graph.nodes().forEach(function(n) {
                 n.originalColor = n.color;
+                n.originalLabel = n.label;
               });
               s.graph.edges().forEach(function(e) {
                 e.originalColor = e.color;
@@ -95,10 +95,14 @@
                 toKeep[nodeId] = e.data.node;
 
                 s.graph.nodes().forEach(function(n) {
-                  if (toKeep[n.id])
+                  if (toKeep[n.id]) {
                     n.color = n.originalColor;
-                  else
+                    n.label = n.originalLabel;
+                  }
+                  else {
                     n.color = '#eee';
+                    n.label = '';
+                  }
                 });
 
                 s.graph.edges().forEach(function(e) {
@@ -115,10 +119,11 @@
               });
 
               // When the stage is clicked, we just color each
-              // node and edge with its original color.
+              // node and edge with its original color and label.
               s.bind('clickStage', function(e) {
                 s.graph.nodes().forEach(function(n) {
                   n.color = n.originalColor;
+                  n.label = n.originalLabel;
                 });
 
                 s.graph.edges().forEach(function(e) {
