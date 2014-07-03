@@ -56,8 +56,9 @@
             return neighbors;
           });
 
+          var myGraph;
           $(document).ready(function () {
-            var myGraph = new sigma({
+            myGraph = new sigma({
               container: 'sigma-container',
               settings: {
                 defaultNodeColor: '#ec5148',
@@ -125,8 +126,12 @@
                 // Same as in the previous event:
                 s.refresh();
               });
-            }
-            )});
+
+              s.graph.edges().forEach(function(e) {
+                e.type = 'curve';
+              });
+            })
+          });
         </script>
 
     </body>
