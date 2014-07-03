@@ -56,14 +56,16 @@
             return neighbors;
           });
 
-          var myGraph;
           $(document).ready(function () {
             myGraph = new sigma({
-              container: 'sigma-container',
               settings: {
                 defaultNodeColor: '#ec5148',
                 animationsTime: 1000
-              }
+              },
+              renderer: {
+                container: document.getElementById('sigma-container'),
+                type: 'canvas'
+              },
             });
 
             sigma.parsers.gexf(
@@ -130,6 +132,7 @@
               s.graph.edges().forEach(function(e) {
                 e.type = 'curve';
               });
+              s.refresh();
             })
           });
         </script>
