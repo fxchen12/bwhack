@@ -18,4 +18,3 @@ linkPairs = dict()
 for i in range(100):
 	print i
 	iterate(wiki.random_uri)
-
