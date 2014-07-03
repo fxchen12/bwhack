@@ -16,11 +16,15 @@
         <link rel="stylesheet" href="css/main.css">
         <script src="js/vendor/modernizr-2.6.2.min.js"></script>
 
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.2.min.js"><\/script>')</script>
+        <script src="js/plugins.js"></script>
+        <script src="js/main.js"></script>
 
         <style type="text/css">
           #sigma-container {
-            max-width: 800px;
-            height: 700px;
+            max-width: 1440px;
+            height: 800px;
             margin: auto;
           }
         </style>
@@ -52,80 +56,78 @@
             return neighbors;
           });
 
-          var myGraph = new sigma({
-            container: 'sigma-container',
-            settings: {
-              defaultNodeColor: '#ec5148',
-              animationsTime: 1000
-            }
-          });
-
-          sigma.parsers.gexf(
-              'graph-data/sp_data_school_day_1_g.gexf',
-              myGraph,
-          function(s) {
-            myGraph.refresh(),
-            // We first need to save the original colors of our
-            // nodes and edges, like this:
-            s.graph.nodes().forEach(function(n) {
-              n.originalColor = n.color;
-            });
-            s.graph.edges().forEach(function(e) {
-              e.originalColor = e.color;
+          $(document).ready(function () {
+            var myGraph = new sigma({
+              container: 'sigma-container',
+              settings: {
+                defaultNodeColor: '#ec5148',
+                animationsTime: 1000
+              }
             });
 
-            // When a node is clicked, we check for each node
-            // if it is a neighbor of the clicked one. If not,
-            // we set its color as grey, and else, it takes its
-            // original color.
-            // We do the same for the edges, and we only keep
-            // edges that have both extremities colored.
-            s.bind('clickNode', function(e) {
-              var nodeId = e.data.node.id,
-                  toKeep = s.graph.neighbors(nodeId);
-              toKeep[nodeId] = e.data.node;
-
+            sigma.parsers.gexf(
+                //'graph-data/sp_data_school_day_1_g.gexf',
+                'graph-data/data.gexf',
+                myGraph,
+            function(s) {
+              myGraph.refresh(),
+              // We first need to save the original colors of our
+              // nodes and edges, like this:
               s.graph.nodes().forEach(function(n) {
-                if (toKeep[n.id])
+                n.originalColor = n.color;
+              });
+              s.graph.edges().forEach(function(e) {
+                e.originalColor = e.color;
+              });
+
+              // When a node is clicked, we check for each node
+              // if it is a neighbor of the clicked one. If not,
+              // we set its color as grey, and else, it takes its
+              // original color.
+              // We do the same for the edges, and we only keep
+              // edges that have both extremities colored.
+              s.bind('clickNode', function(e) {
+                var nodeId = e.data.node.id,
+                    toKeep = s.graph.neighbors(nodeId);
+                toKeep[nodeId] = e.data.node;
+
+                s.graph.nodes().forEach(function(n) {
+                  if (toKeep[n.id])
+                    n.color = n.originalColor;
+                  else
+                    n.color = '#eee';
+                });
+
+                s.graph.edges().forEach(function(e) {
+                  if (toKeep[e.source] && toKeep[e.target])
+                    e.color = e.originalColor;
+                  else
+                    e.color = '#eee';
+                });
+
+                // Since the data has been modified, we need to
+                // call the refresh method to make the colors
+                // update effective.
+                s.refresh();
+              });
+
+              // When the stage is clicked, we just color each
+              // node and edge with its original color.
+              s.bind('clickStage', function(e) {
+                s.graph.nodes().forEach(function(n) {
                   n.color = n.originalColor;
-                else
-                  n.color = '#eee';
-              });
+                });
 
-              s.graph.edges().forEach(function(e) {
-                if (toKeep[e.source] && toKeep[e.target])
+                s.graph.edges().forEach(function(e) {
                   e.color = e.originalColor;
-                else
-                  e.color = '#eee';
+                });
+
+                // Same as in the previous event:
+                s.refresh();
               });
-
-              // Since the data has been modified, we need to
-              // call the refresh method to make the colors
-              // update effective.
-              s.refresh();
-            });
-
-            // When the stage is clicked, we just color each
-            // node and edge with its original color.
-            s.bind('clickStage', function(e) {
-              s.graph.nodes().forEach(function(n) {
-                n.color = n.originalColor;
-              });
-
-              s.graph.edges().forEach(function(e) {
-                e.color = e.originalColor;
-              });
-
-              // Same as in the previous event:
-              s.refresh();
-            });
-          }
-        );
+            }
+            )});
         </script>
 
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.2.min.js"><\/script>')</script>
-        <script src="js/plugins.js"></script>
-        <script src="js/main.js"></script>
     </body>
 </html>
