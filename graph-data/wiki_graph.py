@@ -7,7 +7,7 @@ def iterate(link):
         old_link = link
         link = wiki.get_first_link(old_link)
         if link is not None:
-            f.write(old_link + ',' + link + '\n')
+            f.write(old_link + ';' + link + '\n')
             linkPairs[old_link] = link
     print(link)
 
