@@ -2,16 +2,17 @@ import wiki
 
 def iterate(link):
 	old_link = link
-	link = wiki.get_first_link(link)
-	while link is not None and link not in links:
-		links.add(link)
+	link = wiki.get_first_link(old_link)
+	while link is not None and link not in linkPairs:
 		old_link = link
-		link = wiki.get_first_link(link)
+		link = wiki.get_first_link(old_link)
 		if link is not None:
 			f.write(old_link + ',' + link + '\n')
+			linkPairs[old_link] = link
+
 
 f = open("wiki_graph.csv", 'w')
-links = set()
-for i in range(100):
+linkPairs = dict()
+for i in range(5):
 	print i
 	iterate(wiki.random_uri)
