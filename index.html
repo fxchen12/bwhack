@@ -52,13 +52,19 @@
             return neighbors;
           });
 
-          sigma.parsers.gexf('graph-data/sp_data_school_day_1_g.gexf', {
+          var myGraph = new sigma({
             container: 'sigma-container',
             settings: {
-              defaultNodeColor: '#ec5148'
+              defaultNodeColor: '#ec5148',
+              animationsTime: 1000
             }
-          },
+          });
+
+          sigma.parsers.gexf(
+              'graph-data/sp_data_school_day_1_g.gexf',
+              myGraph,
           function(s) {
+            myGraph.refresh(),
             // We first need to save the original colors of our
             // nodes and edges, like this:
             s.graph.nodes().forEach(function(n) {
