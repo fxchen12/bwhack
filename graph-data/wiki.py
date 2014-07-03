@@ -74,3 +74,5 @@ def iterate(link):
 def main():
 	iterate(random_uri)
 
+if __name__ == "__main__":
+    main()

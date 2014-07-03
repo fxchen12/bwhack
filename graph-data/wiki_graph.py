@@ -11,7 +11,7 @@ def iterate(link):
 			linkPairs[old_link] = link
 
 
-f = open("wiki_graph.csv", 'w')
+f = open("wiki_graph.csv", 'a')
 linkPairs = dict()
 for i in range(5):
 	print i
