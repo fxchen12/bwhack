@@ -14,12 +14,8 @@ def iterate(link):
 
 f = open("wiki_graph.csv", 'a')
 linkPairs = dict()
-<<<<<<< HEAD
+
 for i in range(100):
 	print i
 	iterate(wiki.random_uri)
-=======
-for i in range(200):
-    print i
-    iterate(wiki.random_uri)
->>>>>>> FETCH_HEAD
+
